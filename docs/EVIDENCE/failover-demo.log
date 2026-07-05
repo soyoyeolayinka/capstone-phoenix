@@ -1,0 +1,162 @@
+Failover demo captured at 2026-07-05T12:25:07Z
+Target drained worker: ip-10-20-2-143
+Health URL: https://taskapp.18.225.218.179.sslip.io/api/health
+
+== Before drain: nodes ==
+NAME             STATUS   ROLES                  AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+ip-10-20-1-145   Ready    control-plane,master   9h    v1.30.6+k3s1   10.20.1.145   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-2-143   Ready    <none>                 9h    v1.30.6+k3s1   10.20.2.143   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-3-129   Ready    <none>                 9h    v1.30.6+k3s1   10.20.3.129   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+
+== Before drain: pods ==
+NAME                        READY   STATUS      RESTARTS        AGE     IP           NODE             NOMINATED NODE   READINESS GATES
+backend-64d84cd7b6-6pfmp    1/1     Running     1 (37m ago)     99m     10.42.0.29   ip-10-20-1-145   <none>           <none>
+backend-64d84cd7b6-kkknl    1/1     Running     0               37m     10.42.1.23   ip-10-20-2-143   <none>           <none>
+frontend-56fcb9b8bf-4mhmp   1/1     Running     0               8h      10.42.2.8    ip-10-20-3-129   <none>           <none>
+frontend-56fcb9b8bf-jxf2x   1/1     Running     16 (147m ago)   8h      10.42.0.19   ip-10-20-1-145   <none>           <none>
+postgres-0                  1/1     Running     1               5h45m   10.42.0.26   ip-10-20-1-145   <none>           <none>
+taskapp-migrate-njvrk       0/1     Completed   0               108m    10.42.2.11   ip-10-20-3-129   <none>           <none>
+
+== Starting request loop during drain ==
+
+== Drain command ==
+12:25:11 request_01 node/ip-10-20-2-143 cordoned
+http=200 time=1.344368
+12:25:15 request_02 Warning: ignoring DaemonSet-managed Pods: kube-system/svclb-ingress-nginx-controller-8cfbcb3f-52zwd
+evicting pod taskapp/backend-64d84cd7b6-kkknl
+evicting pod argocd/argocd-repo-server-6568747c68-jfnvq
+evicting pod argocd/argocd-application-controller-0
+evicting pod argocd/argocd-applicationset-controller-7b7cf84fbd-dwdbz
+evicting pod argocd/argocd-dex-server-7fccdc6c45-bwztt
+evicting pod argocd/argocd-notifications-controller-7c9c57d677-jrkxb
+evicting pod argocd/argocd-redis-f6bf68dd5-xjxv8
+evicting pod kube-system/coredns-7b98449c4-6zr9f
+evicting pod ingress-nginx/ingress-nginx-admission-create-lzgmt
+evicting pod kube-system/local-path-provisioner-595dcfc56f-4tr47
+evicting pod argocd/argocd-server-867588ffb6-tv7dx
+evicting pod cert-manager/cert-manager-webhook-657b9f664c-sbf4c
+evicting pod cert-manager/cert-manager-cainjector-5c7f79b84b-5xkqp
+http=200 time=0.698257
+12:25:17 request_03 http=200 time=1.748430
+12:25:21 request_04 http=200 time=0.752836
+12:25:24 request_05 http=200 time=0.766969
+12:25:27 request_06 http=200 time=0.735462
+12:25:30 request_07 http=200 time=0.833204
+12:25:32 request_08 http=200 time=0.954549
+12:25:35 request_09 pod/ingress-nginx-admission-create-lzgmt evicted
+http=200 time=0.809200
+12:25:38 request_10 http=200 time=5.775121
+12:25:46 request_11 http=200 time=0.774585
+12:25:49 request_12 http=200 time=5.716937
+12:25:57 request_13 http=200 time=1.421218
+12:26:00 request_14 http=200 time=0.812668
+12:26:03 request_15 http=200 time=0.828852
+12:26:06 request_16 http=200 time=0.788266
+12:26:09 request_17 http=200 time=0.685144
+12:26:11 request_18 http=200 time=0.749663
+12:26:14 request_19 http=200 time=0.706106
+12:26:17 request_20 http=200 time=0.736601
+pod/backend-64d84cd7b6-kkknl evicted
+12:26:20 request_21 http=200 time=0.738523
+12:26:22 request_22 http=200 time=0.740110
+12:26:25 request_23 http=200 time=0.728948
+12:26:28 request_24 http=200 time=0.768452
+12:26:31 request_25 http=200 time=0.854484
+12:26:33 request_26 http=200 time=0.736884
+12:26:36 request_27 http=200 time=0.730921
+12:26:39 request_28 http=200 time=0.845132
+12:26:42 request_29 http=200 time=0.704017
+12:26:45 request_30 http=200 time=0.707053
+12:26:47 request_31 http=200 time=0.714980
+12:26:50 request_32 http=200 time=0.701582
+12:26:53 request_33 http=200 time=0.719166
+12:26:56 request_34 http=200 time=0.769412
+12:26:58 request_35 http=200 time=0.733900
+12:27:01 request_36 http=200 time=0.736691
+12:27:04 request_37 http=200 time=0.708785
+12:27:07 request_38 http=200 time=0.748496
+12:27:09 request_39 http=200 time=0.724124
+12:27:12 request_40 http=200 time=0.801802
+12:27:15 request_41 http=200 time=0.766251
+12:27:18 request_42 http=200 time=0.747358
+12:27:20 request_43 http=200 time=0.814767
+12:27:23 request_44 http=200 time=0.882141
+12:27:26 request_45 http=200 time=0.685919
+pod/cert-manager-webhook-657b9f664c-sbf4c evicted
+There are pending pods in node "ip-10-20-2-143" when an error occurred: [error when evicting pods/"argocd-application-controller-0" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded, error when evicting pods/"argocd-server-867588ffb6-tv7dx" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded, error when waiting for pod "argocd-notifications-controller-7c9c57d677-jrkxb" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "argocd-redis-f6bf68dd5-xjxv8" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "local-path-provisioner-595dcfc56f-4tr47" in namespace "kube-system" to terminate: context deadline exceeded, error when waiting for pod "argocd-dex-server-7fccdc6c45-bwztt" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "cert-manager-cainjector-5c7f79b84b-5xkqp" in namespace "cert-manager" to terminate: context deadline exceeded, error when waiting for pod "coredns-7b98449c4-6zr9f" in namespace "kube-system" to terminate: context deadline exceeded, error when waiting for pod "argocd-repo-server-6568747c68-jfnvq" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "argocd-applicationset-controller-7b7cf84fbd-dwdbz" in namespace "argocd" to terminate: context deadline exceeded]
+pod/argocd-application-controller-0
+pod/argocd-applicationset-controller-7b7cf84fbd-dwdbz
+pod/argocd-dex-server-7fccdc6c45-bwztt
+pod/argocd-notifications-controller-7c9c57d677-jrkxb
+pod/argocd-redis-f6bf68dd5-xjxv8
+pod/argocd-repo-server-6568747c68-jfnvq
+pod/argocd-server-867588ffb6-tv7dx
+pod/cert-manager-cainjector-5c7f79b84b-5xkqp
+pod/coredns-7b98449c4-6zr9f
+pod/local-path-provisioner-595dcfc56f-4tr47
+error: unable to drain node "ip-10-20-2-143" due to error: [error when evicting pods/"argocd-application-controller-0" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded, error when evicting pods/"argocd-server-867588ffb6-tv7dx" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded, error when waiting for pod "argocd-notifications-controller-7c9c57d677-jrkxb" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "argocd-redis-f6bf68dd5-xjxv8" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "local-path-provisioner-595dcfc56f-4tr47" in namespace "kube-system" to terminate: context deadline exceeded, error when waiting for pod "argocd-dex-server-7fccdc6c45-bwztt" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "cert-manager-cainjector-5c7f79b84b-5xkqp" in namespace "cert-manager" to terminate: context deadline exceeded, error when waiting for pod "coredns-7b98449c4-6zr9f" in namespace "kube-system" to terminate: context deadline exceeded, error when waiting for pod "argocd-repo-server-6568747c68-jfnvq" in namespace "argocd" to terminate: context deadline exceeded, error when waiting for pod "argocd-applicationset-controller-7b7cf84fbd-dwdbz" in namespace "argocd" to terminate: context deadline exceeded], continuing command...
+There are pending nodes to be drained:
+ ip-10-20-2-143
+error when evicting pods/"argocd-application-controller-0" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded
+error when evicting pods/"argocd-server-867588ffb6-tv7dx" -n "argocd": Timeout: request did not complete within requested timeout - context deadline exceeded
+error when waiting for pod "argocd-notifications-controller-7c9c57d677-jrkxb" in namespace "argocd" to terminate: context deadline exceeded
+error when waiting for pod "argocd-redis-f6bf68dd5-xjxv8" in namespace "argocd" to terminate: context deadline exceeded
+error when waiting for pod "local-path-provisioner-595dcfc56f-4tr47" in namespace "kube-system" to terminate: context deadline exceeded
+error when waiting for pod "argocd-dex-server-7fccdc6c45-bwztt" in namespace "argocd" to terminate: context deadline exceeded
+error when waiting for pod "cert-manager-cainjector-5c7f79b84b-5xkqp" in namespace "cert-manager" to terminate: context deadline exceeded
+error when waiting for pod "coredns-7b98449c4-6zr9f" in namespace "kube-system" to terminate: context deadline exceeded
+error when waiting for pod "argocd-repo-server-6568747c68-jfnvq" in namespace "argocd" to terminate: context deadline exceeded
+error when waiting for pod "argocd-applicationset-controller-7b7cf84fbd-dwdbz" in namespace "argocd" to terminate: context deadline exceeded
+drain_exit=1
+
+== After drain: nodes ==
+NAME             STATUS                     ROLES                  AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+ip-10-20-1-145   Ready                      control-plane,master   9h    v1.30.6+k3s1   10.20.1.145   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-2-143   Ready,SchedulingDisabled   <none>                 9h    v1.30.6+k3s1   10.20.2.143   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-3-129   Ready                      <none>                 9h    v1.30.6+k3s1   10.20.3.129   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+
+== After drain: pods ==
+NAME                        READY   STATUS      RESTARTS        AGE     IP           NODE             NOMINATED NODE   READINESS GATES
+backend-64d84cd7b6-6pfmp    1/1     Running     1 (42m ago)     103m    10.42.0.29   ip-10-20-1-145   <none>           <none>
+backend-64d84cd7b6-v6bdf    0/1     Init:0/1    0               3m58s   10.42.2.27   ip-10-20-3-129   <none>           <none>
+frontend-56fcb9b8bf-4mhmp   1/1     Running     0               8h      10.42.2.8    ip-10-20-3-129   <none>           <none>
+frontend-56fcb9b8bf-jxf2x   1/1     Running     16 (151m ago)   8h      10.42.0.19   ip-10-20-1-145   <none>           <none>
+postgres-0                  1/1     Running     1               5h50m   10.42.0.26   ip-10-20-1-145   <none>           <none>
+taskapp-migrate-njvrk       0/1     Completed   0               112m    10.42.2.11   ip-10-20-3-129   <none>           <none>
+
+== Wait for backend rollout after drain ==
+Waiting for deployment "backend" rollout to finish: 1 of 2 updated replicas are available...
+Waiting for deployment "backend" rollout to finish: 0 of 2 updated replicas are available...
+error: timed out waiting for the condition
+
+== Health after drain ==
+<html>
+<head><title>503 Service Temporarily Unavailable</title></head>
+<body>
+<center><h1>503 Service Temporarily Unavailable</h1></center>
+<hr><center>nginx</center>
+</body>
+</html>
+
+
+== Uncordon command ==
+node/ip-10-20-2-143 uncordoned
+
+== After uncordon: nodes ==
+NAME             STATUS   ROLES                  AGE   VERSION        INTERNAL-IP   EXTERNAL-IP   OS-IMAGE             KERNEL-VERSION   CONTAINER-RUNTIME
+ip-10-20-1-145   Ready    control-plane,master   9h    v1.30.6+k3s1   10.20.1.145   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-2-143   Ready    <none>                 9h    v1.30.6+k3s1   10.20.2.143   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+ip-10-20-3-129   Ready    <none>                 9h    v1.30.6+k3s1   10.20.3.129   <none>        Ubuntu 22.04.5 LTS   6.8.0-1060-aws   containerd://1.7.22-k3s1
+
+== Final app status ==
+NAME                        READY   STATUS      RESTARTS        AGE     IP           NODE             NOMINATED NODE   READINESS GATES
+backend-64d84cd7b6-6pfmp    0/1     Running     3 (4m51s ago)   109m    10.42.0.29   ip-10-20-1-145   <none>           <none>
+backend-64d84cd7b6-v6bdf    1/1     Running     0               9m48s   10.42.2.27   ip-10-20-3-129   <none>           <none>
+frontend-56fcb9b8bf-4mhmp   1/1     Running     0               8h      10.42.2.8    ip-10-20-3-129   <none>           <none>
+frontend-56fcb9b8bf-jxf2x   0/1     Running     18              8h      10.42.0.19   ip-10-20-1-145   <none>           <none>
+postgres-0                  1/1     Running     1               5h56m   10.42.0.26   ip-10-20-1-145   <none>           <none>
+taskapp-migrate-njvrk       0/1     Completed   0               118m    10.42.2.11   ip-10-20-3-129   <none>           <none>
+
+== Final request ==
+{"database":"connected","status":"healthy","timestamp":"2026-07-05T12:35:45.832553"}
+
