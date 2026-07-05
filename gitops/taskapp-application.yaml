@@ -26,3 +26,9 @@ spec:
       namespace: taskapp
       jsonPointers:
         - /spec/volumeClaimTemplates
+    - group: apps
+      kind: Deployment
+      name: backend
+      namespace: taskapp
+      jsonPointers:
+        - /spec/replicas
