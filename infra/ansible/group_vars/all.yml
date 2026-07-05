@@ -1,0 +1,15 @@
+k3s_version: "v1.30.6+k3s1"
+k3s_install_url: "https://get.k3s.io"
+k3s_server_extra_args:
+  - "--disable"
+  - "traefik"
+  - "--write-kubeconfig-mode"
+  - "0644"
+allowed_tcp_ports:
+  - "22"
+  - "80"
+  - "443"
+operator_cidr: "105.127.12.238/32"
+cluster_private_cidr: "10.20.0.0/16"
+swapfile_path: /swapfile
+swapfile_size_mb: 2048

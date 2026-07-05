@@ -1,0 +1,95 @@
+- name: Update apt cache
+  ansible.builtin.apt:
+    update_cache: true
+    cache_valid_time: 3600
+
+- name: Install base packages
+  ansible.builtin.apt:
+    name:
+      - curl
+      - ufw
+      - fail2ban
+      - ca-certificates
+    state: present
+
+- name: Check swapfile
+  ansible.builtin.stat:
+    path: "{{ swapfile_path }}"
+  register: swapfile_stat
+
+- name: Create swapfile
+  ansible.builtin.command: "fallocate -l {{ swapfile_size_mb }}M {{ swapfile_path }}"
+  args:
+    creates: "{{ swapfile_path }}"
+  when: not swapfile_stat.stat.exists
+
+- name: Set swapfile permissions
+  ansible.builtin.file:
+    path: "{{ swapfile_path }}"
+    owner: root
+    group: root
+    mode: "0600"
+
+- name: Check active swap
+  ansible.builtin.command: swapon --show=NAME --noheadings
+  register: active_swap
+  changed_when: false
+
+- name: Format swapfile
+  ansible.builtin.command: "mkswap {{ swapfile_path }}"
+  when: swapfile_path not in active_swap.stdout_lines
+
+- name: Enable swapfile
+  ansible.builtin.command: "swapon {{ swapfile_path }}"
+  when: swapfile_path not in active_swap.stdout_lines
+
+- name: Persist swapfile
+  ansible.builtin.mount:
+    name: none
+    src: "{{ swapfile_path }}"
+    fstype: swap
+    opts: sw
+    passno: "0"
+    dump: "0"
+    state: present
+
+- name: Disable root SSH login
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PermitRootLogin"
+    line: "PermitRootLogin no"
+    validate: "sshd -t -f %s"
+  notify: Restart ssh
+
+- name: Disable password SSH authentication
+  ansible.builtin.lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: "^#?PasswordAuthentication"
+    line: "PasswordAuthentication no"
+    validate: "sshd -t -f %s"
+  notify: Restart ssh
+
+- name: Allow required public TCP ports
+  community.general.ufw:
+    rule: allow
+    port: "{{ item }}"
+    proto: tcp
+  loop: "{{ allowed_tcp_ports }}"
+
+- name: Allow Kubernetes API from operator network
+  community.general.ufw:
+    rule: allow
+    port: "6443"
+    proto: tcp
+    from_ip: "{{ operator_cidr }}"
+  when: "'server' in group_names"
+
+- name: Allow all traffic from cluster private network
+  community.general.ufw:
+    rule: allow
+    from_ip: "{{ cluster_private_cidr }}"
+
+- name: Enable UFW
+  community.general.ufw:
+    state: enabled
+    policy: deny

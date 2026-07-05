@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: taskapp-config
+  namespace: taskapp
+data:
+  FLASK_ENV: "production"
+  DB_HOST: "postgres"
+  DB_PORT: "5432"
+  DB_NAME: "taskapp"
+  DATABASE_HOST: "postgres"
+  DATABASE_PORT: "5432"
+  DATABASE_NAME: "taskapp"
+  FRONTEND_ORIGIN: "https://taskapp.18.225.218.179.sslip.io"
+  CORS_ORIGINS: "https://taskapp.18.225.218.179.sslip.io"

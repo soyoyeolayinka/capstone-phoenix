@@ -5,6 +5,9 @@
 *.tfvars
 !*.tfvars.example
 crash.log
+*.tfplan
+tfplan*
+terraform-apply.*
 
 # kubeconfig & cluster joins
 kubeconfig
@@ -12,6 +15,7 @@ kubeconfig
 k3s.yaml
 node-token
 *.token
+infra/ansible/inventory.ini
 
 # secrets / env
 .env
@@ -25,6 +29,7 @@ id_rsa*
 
 # argo / helm local
 charts/*.tgz
+infra/terraform/backend.tf
 
 # os / editor
 .DS_Store
